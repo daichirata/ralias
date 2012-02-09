@@ -5,7 +5,7 @@ module Ralias::Command
 help             -> print help
 init             -> create ~/.raliasrc
 list             -> print defined aliase command
-new              -> create new aliase command (TODO)
+define           -> define new aliase command (TODO)
 HELP
     end
   end
@@ -38,10 +38,10 @@ HELP
   end
   built_in_commands << "init"
 
-  define("new") do
+  define("define") do
     with_color(:red) { "TODO" }
   end
-  built_in_commands << "new"
+  built_in_commands << "define"
 
   define("list") do
     commands.each do |command, block|

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Daic_h"]
   s.email       = ["bunny.hop.md@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = 'to extend the alias of shell in ruby'
+  s.description = s.summary
 
   s.rubyforge_project = "ralias"
 
@@ -17,4 +17,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_development_dependency 'rake',      '>= 0.9.2.2'
+  s.add_development_dependency 'rspec',     '>= 2.7.0'
 end

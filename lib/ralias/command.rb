@@ -8,6 +8,10 @@ module Ralias
         File.expand_path("~/.raliasrc")
       end
 
+      def clear
+        @@commands = {}
+      end
+
       def commands
         @@commands ||= {}
       end
@@ -17,10 +21,11 @@ module Ralias
       end
 
       def define(name, &block)
-        commands[name] ||= block
+        return if commands[name]
+        commands[name] = block
       end
 
-      def load_file
+      def load
         require 'ralias/define_commands'
 
         begin
