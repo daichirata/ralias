@@ -31,10 +31,6 @@ create .raliasrc file.
 
     $ ralias init
 
-result is
-
-    create file ~/.raliasrc
-
 ## .raliasrc
 
 ### An example of how editing
