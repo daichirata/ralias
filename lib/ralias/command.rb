@@ -2,56 +2,67 @@ module Ralias
   module Command
     extend Color
 
-    def self.rc_path
-      File.expand_path("~/.raliasrc")
-    end
+    class << self
 
-    def self.commands
-      @@commands ||= {}
-    end
-
-    def self.built_in_commands
-      @@built_in_commands ||= []
-    end
-
-    def self.define(name, &block)
-      commands[name] ||= block
-    end
-
-    def self.loader
-      require 'ralias/define_commands'
-
-      begin
-        class_eval(File.open(rc_path).read) if File.exist?(rc_path)
-        with_color(:cyan) { "load ~/.raliasrc" }
-      rescue
-        nil
+      def rc_path
+        File.expand_path("~/.raliasrc")
       end
-    end
 
-    def self.run(_cmd, args)
-      cmd = commands[_cmd]
-      required_args = cmd.parameters
+      def commands
+        @@commands ||= {}
+      end
 
-      unless required_args.size == args.size
-        with_color(:red) do
-          "wrong number of arguments (#{args.size} for #{required_args.size}) (ArgumentError)"
-        end
+      def built_in_commands
+        @@built_in_commands ||= []
+      end
 
-        required_args.each do |arg|
-          with_color { "argumets: " + arg[1].to_s }
-        end
-        raise CommandNotFound
-      else
-        if built_in_commands.include?(_cmd)
-          cmd.call(*args)
-        else
-          system cmd.call(*args)
+      def define(name, &block)
+        commands[name] ||= block
+      end
+
+      def load_file
+        require 'ralias/define_commands'
+
+        begin
+          if File.exist?(rc_path)
+            class_eval(File.open(rc_path).read)
+            with_color(:cyan) { "load ~/.raliasrc" }
+          end
+        rescue NameError
+          with_color(:red) { "could not be load ~/.raliasrc" }
+        rescue
+          nil
         end
       end
 
-    rescue
-      with_color(:red) { "command not found." }
+      def run(_cmd, args)
+        cmd = commands[_cmd]
+        required_args = cmd.parameters
+
+        begin
+          if required_args.size == args.size
+            if built_in_commands.include?(_cmd)
+              cmd.call(*args)
+            else
+              system cmd.call(*args)
+            end
+          else
+            with_color(:red) do
+              "wrong number of arguments (#{args.size} for #{required_args.size}) (ArgumentError)"
+            end
+
+            required_args.each do |arg|
+              with_color { "argumets: " + arg[1].to_s }
+            end
+            raise CommandNotFound
+          end
+
+        rescue CommandNotFound
+          with_color(:red) { "command not found." }
+        rescue
+          with_color(:red) { "error in the definition file." }
+        end
+      end
     end
   end
 end

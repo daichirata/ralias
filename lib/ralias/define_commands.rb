@@ -4,8 +4,8 @@ module Ralias::Command
       <<-HELP
 help             -> print help
 init             -> create ~/.raliasrc
-new              -> create new aliase command
 list             -> print defined aliase command
+new              -> create new aliase command (TODO)
 HELP
     end
   end
@@ -15,7 +15,9 @@ HELP
     unless File.exist?(rc_path)
       File.open(rc_path, "w") do |rc_file|
         rc_file.puts <<-'EXAMPLE'
-#  Example
+# -*- coding: utf-8; mode: ruby; -*-
+#
+# Example
 #
 #  normal alias definition
 #
@@ -26,18 +28,31 @@ HELP
 #    define("github") do |user_name, repository|
 #      "git clone https://github.com/#{user_name}/#{repository}.git"
 #    end
+#
         EXAMPLE
       end
       with_color(:yellow) { "create file #{rc_path}" }
+    else
+      with_color(:green) { "exist file #{rc_path}" }
     end
   end
   built_in_commands << "init"
 
-  define("new") do |name, alias_command|
+  define("new") do
+    with_color(:red) { "TODO" }
   end
   built_in_commands << "new"
 
   define("list") do
+    commands.each do |command, block|
+      unless block.parameters.empty?
+        block.parameters.each do |param|
+          command += (" :" +param[1].to_s)
+        end
+      end
+
+      with_color(:green) { command }
+    end
   end
   built_in_commands << "list"
 end
