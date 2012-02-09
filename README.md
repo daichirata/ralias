@@ -14,24 +14,38 @@
 
 ## How to use
 
-you type.
+you type
 
     $ ralias
 
-Help will be output.
+help will be output.
 
     help      -> print help
     init      -> create ~/.raliasrc
     list      -> print defined aliase command
     define    -> define new aliase command (TODO)
 
+## Ralias init
+
+create .raliasrc file.
+
+    $ ralias init
+
+result is
+
+    create file ~/.raliasrc
+
 ## .raliasrc
 
-### Example
+### An example of how editing
 
-normal alias definition
+normal alias definition.
 
     define("lsA") { "ls -al" }
+
+please use this way.
+
+    $ ralias lsA
 
 if you want to use the arguments to the alias
 
@@ -39,12 +53,31 @@ if you want to use the arguments to the alias
       "git clone https://github.com/#{user_name}/#{repository}.git"
     end
 
-In that case, you use it in this manner
+in that case, you use it in this manner.
 
     $ ralias github user_name repository
 
-The result is
+result is
 
     load ~/.raliasrc
     Cloning into repository...
+    ...
 
+## $ ralias list
+
+print defined aliase command.
+
+if the initial state,
+
+    help
+    init
+    define
+    list
+
+if after you define the command.
+
+    help
+    init
+    define
+    list
+    github :user_name :repository
