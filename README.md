@@ -1,5 +1,7 @@
 # Ralias
 
+This library is extended so that it can be used to rich your shell more :)
+
 ## Build Status
 
 <img src="https://secure.travis-ci.org/daic-h/ralias.png"/>
