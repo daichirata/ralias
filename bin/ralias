@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+bin_file = Pathname.new(__FILE__).realpath
+
+$:.unshift File.expand_path("../../lib", bin_file)
+
+require 'ralias'
+Ralias::CLI.start(ARGV)
+
+=begin
+
+
+COLORS =
+  { :red => 31, :green => 32, :yellow => 33, :blue => 34, :magenta => 35, :cyan => 36, :white => 27, :default => 39 }
+
+@@command_list = {}
+
+def with_color(state = :default)
+  puts "\e[#{COLORS[state]}m#{yield}\e[0m"
+end
+
+def define(name, &block)
+  @@command_list[name] = lambda(&block)
+end
+
+begin
+  load "~/.rubyaliaserc"
+  with_color(:cyan) { "load rubyaliaserc" }
+rescue LoadError
+  nil
+end
+
+#
+#  Example
+#
+#  define("github") do |user_name, repository|
+#    "git clone https://github.com/#{user_name}/#{repository}.git"
+#  end
+#
+
+args = ARGV
+command = args.shift
+
+required_args = @@command_list[command].parameters
+
+unless required_args == args.size
+  with_color(:red){ "wrong number of arguments (#{args.size} for #{required_args.size}) (ArgumentError)" }
+  required_args.each do |arg|
+    with_color { "argumets: " + arg[1].to_s }
+  end
+else
+  system @@command_list[command].call(*args)
+end
+
+=end
