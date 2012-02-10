@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8; mode: ruby; -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "ralias/version"
 
@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Daic_h"]
   s.email       = ["bunny.hop.md@gmail.com"]
   s.homepage    = ""
-  s.summary     = 'to extend the alias of shell in ruby'
+  s.summary     = 'can be defined like the alias of shell'
   s.description = s.summary
 
   s.rubyforge_project = "ralias"

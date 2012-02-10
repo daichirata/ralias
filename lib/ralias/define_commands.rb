@@ -1,4 +1,14 @@
 module Ralias::Command
+  class << self
+    def b_cd(command = "")
+      %Q(cd #{command.to_s} && exec /bin/bash)
+    end
+
+    def z_cd(command = "")
+      %Q(cd #{command.to_s} && exec /bin/zsh)
+    end
+  end
+
   define("help") do
     with_color(:red) do
       <<-HELP
