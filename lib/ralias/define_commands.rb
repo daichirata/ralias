@@ -1,14 +1,4 @@
 module Ralias::Command
-  class << self
-    def b_cd(command = "")
-      %Q(cd #{command.to_s} && exec /bin/bash)
-    end
-
-    def z_cd(command = "")
-      %Q(cd #{command.to_s} && exec /bin/zsh)
-    end
-  end
-
   define("help") do
     with_color(:red) do
       <<-HELP
@@ -31,13 +21,13 @@ HELP
 #
 #  normal alias definition
 #
-#    define("lsA") { "ls -al" }
+#      define("lsA") { "ls -al" }
 #
 #  if you want to use the arguments to the alias
 #
-#    define("github") do |user_name, repository|
-#      "git clone https://github.com/#{user_name}/#{repository}.git"
-#    end
+#      define("github") do |user_name, repository|
+#        "git clone https://github.com/#{user_name}/#{repository}.git"
+#      end
 #
         EXAMPLE
       end
@@ -65,4 +55,17 @@ HELP
     end
   end
   built_in_commands << "list"
+
+  #
+  # Use in the command function here
+  #
+  class << self
+    def b_cd(command = "")
+      %Q(cd #{command.to_s} && exec /bin/bash)
+    end
+
+    def z_cd(command = "")
+      %Q(cd #{command.to_s} && exec /bin/zsh)
+    end
+  end
 end

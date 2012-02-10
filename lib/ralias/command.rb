@@ -41,32 +41,28 @@ module Ralias
       end
 
       def run(_cmd, args)
-        cmd = commands[_cmd]
+        cmd = commands[_cmd] || (raise CommandNotFound)
         required_args = cmd.parameters
 
-        begin
-          if required_args.size == args.size
-            if built_in_commands.include?(_cmd)
-              cmd.call(*args)
-            else
-              system cmd.call(*args)
-            end
+        if required_args.size == args.size
+          if built_in_commands.include?(_cmd)
+            cmd.call(*args)
           else
-            with_color(:red) do
-              "wrong number of arguments (#{args.size} for #{required_args.size}) (ArgumentError)"
-            end
-
-            required_args.each do |arg|
-              with_color { "argumets: " + arg[1].to_s }
-            end
-            raise CommandNotFound
+            (system cmd.call(*args))
+          end
+        else
+          with_color(:red) do
+            "wrong number of arguments (#{args.size} for #{required_args.size}) (ArgumentError)"
           end
 
-        rescue CommandNotFound
-          with_color(:red) { "command not found." }
-        rescue
-          with_color(:red) { "error in the definition file." }
+          required_args.each do |arg|
+            with_color { "argumets: " + arg[1].to_s }
+          end
         end
+      rescue CommandNotFound
+        with_color(:red) { "command not found." }
+      rescue
+        with_color(:red) { "error in the definition file." }
       end
     end
   end
